@@ -1,4 +1,3 @@
-#include "main.h"
 #include "stdio.h"
 /**
  *print_times_table - n times table.
