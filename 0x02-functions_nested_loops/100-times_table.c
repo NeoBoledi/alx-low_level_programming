@@ -1,4 +1,4 @@
-#include "stdio.h"
+#include "holberton.h"
 /**
  *print_times_table - n times table.
  *@n: the number defines the table.
@@ -18,6 +18,7 @@ if (n > 15)
 break;
 }
 else
+{
 product = i * k;
 if (k == 0)
 {
@@ -30,7 +31,7 @@ _putchar('0' + (product / 10));
 _putchar('0' +  (product % 10));
 }
 else if (product >= 100)
-{
+{       
 _putchar('0' + (product / 100));
 _putchar('0' + ((product / 10) % 10));
 _putchar('0' + (product % 10));
@@ -39,7 +40,8 @@ else
 {
 _putchar(' ');
 _putchar(' ');
-_putchar product + '0');				}
+_putchar(product + '0');
+}
 if (k != n)
 {
 _putchar(',');
