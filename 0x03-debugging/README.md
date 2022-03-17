@@ -1,1 +1,1 @@
-Learning to Debug in C
+Learning debug in c
