@@ -1,101 +1,93 @@
+#include "variadic_functions.h"
 #include <stdarg.h>
 #include <stdio.h>
-#include <variadic_functions.h>
 
 /**
- * print_char - function that prints character
- * @argptr: argument list pointer to character to be printed
- */
-
-void print_char(va_list argptr)
-{
-	char character;
-
-	character = va_arg(argptr, int);
-	printf("%c", character);
-}
-
-/**
- * print_int - function that prints integer
- * @argptr: argument list pointer to integer to be printed
- */
-
-void print_int(va_list argptr)
-{
-	int num_i;
-
-	num_i = va_arg(argptr, int);
-	printf("%i", num_i);
-}
-
-/**
- * print_float - function that prints a float
- * @argptr: argument list pointer to float to be printed
- */
-
-void print_float(va_list argptr)
-{
-	float num_f;
-
-	num_f = va_arg(argptr, double);
-	printf("%f", num_f);
-}
-
-/**
- * print_string - function that prints string
- * @argptr: argument list pointer to string to be printed
- */
-
-void print_string(va_list argptr)
-{
-	char *str;
-
-	str = va_arg(argptr, char*);
-
-	if (str == NULL)
-	{
-		printf("(nil)");
-		return;
-	}
-	printf("%s", str);
-}
-
-/**
- * print_all - function that prints anything
- * @format: list of types of arguments passed to the function
- * @...: number of arguments
- * Return: Nothing
+ * print_all - prints anything
+ * @format: list of type of arguement passed to the function
  */
 
 void print_all(const char * const format, ...)
 {
-	va_list arguments;
-	int index, arg_len;
-	char *separator = "";
+	unsigned int i, j;
+	char *p = "";
+	va_list list;
 
-	prints_t fmt_list[] = {
+	base index[] = {
 		{"c", print_char},
 		{"i", print_int},
 		{"f", print_float},
-		{"s", print_string}
+		{"s", print_string},
+		{NULL, NULL}
 	};
-	va_start(arguments, format);
-	index = 0;
-	while (format && (*(format + index)))
+
+	va_start(list, format);
+	i = 0;
+
+	while (format && format[i])
 	{
-		arg_len = 0;
-		while (arg_len < 4 && (*(format + index) != *(fmt_list[arg_len].notation)))
+		j = 0;
+		while (index[j].print)
 		{
-			arg_len++;
+			if (format[i] == index[j].print[0])
+			{
+				printf("%s", p);
+				index[j].f_var(list);
+				p = ", ";
+			}
+			j++;
 		}
-		if (arg_len < 4)
-		{
-			printf("%s", separator);
-			fmt_list[arg_len].print_dType(arguments);
-			separator = ", ";
-		}
-		index++;
+		i++;
 	}
 	printf("\n");
-	va_end(arguments);
+	va_end(list);
+}
+
+/**
+ * print_char - print char's argument.
+ * @list: Is the list of arguments.
+ * Return: void.
+ */
+void print_char(va_list list)
+{
+	printf("%c", va_arg(list, int));
+}
+
+
+/**
+ * print_int - print integer's argument
+ * @list: Is the list of arguments.
+ * Return: void.
+ */
+void print_int(va_list list)
+{
+	printf("%d", va_arg(list, int));
+}
+
+/**
+ * print_float - print float's argument.
+ * @list: Is the list of arguments.
+ * Return: void.
+ */
+void print_float(va_list list)
+{
+	printf("%f", va_arg(list, double));
+}
+
+/**
+ * print_string - print string's arguments.
+ * @list: Is the list of arguments.
+ * Return: void.
+ */
+void print_string(va_list list)
+{
+	char *p;
+
+	p = va_arg(list, char *);
+	if (p == NULL)
+	{
+		printf("(nil)");
+		return;
+	}
+	printf("%s", p);	
 }
